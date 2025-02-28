@@ -1,0 +1,89 @@
+<div class="container mt-6">
+  <div class="mb-4 relative">
+    <input
+      type="text"
+      placeholder="Find cities..."
+      class="input w-full bg-base-300"
+      (input)="updateFilter($event)"
+    />
+    <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="w-6 h-6 text-gray-400"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+        />
+      </svg>
+    </div>
+  </div>
+
+  <div class="divider divider-start my-6">Results</div>
+
+  <div class="grid grid-cols-1 gap-4">
+    @for (city of filteredCities(); track city.name) {
+      <div class="card bg-base-200">
+        <div class="card-body flex flex-col">
+          <div class="flex gap-2 items-center">
+            <h2 class="font-bold text-2xl">{{ city.name }}</h2>
+            <h2 class="text-blue-900 text-2xl">/{{ city.name_native }}/</h2>
+            <a [href]="getGoogleMapsUrl(city)" target="_blank" class="btn btn-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-gray-400">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+            </a>
+          </div>
+          <div class="flex flex-wrap flex-col sm:flex-row">
+            <p class="flex flex-col">
+              <span class="text-gray-600">Country</span>
+              <span>{{ city.country }}</span>
+            </p>
+            <p class="flex flex-col">
+              <span class="text-gray-600">Continent</span>
+              <span>{{ city.continent }}</span>
+            </p>
+            <p class="flex flex-col">
+              <span class="text-gray-600">Population</span>
+              <span>{{ city.population | number }}</span>
+            </p>
+            <p class="flex flex-col">
+              <span class="text-gray-600">Founded</span>
+              <span>{{ city.founded }}</span>
+            </p>
+          </div>
+
+          <p class="flex flex-col">
+            <span class="text-gray-600">Landmarks</span>
+            <span class="flex gap-2 flex-wrap">
+                @for (landmark of city.landmarks; track $index) {
+                  <a [href]="getGoogleMapsUrl(city, landmark)" target="_blank" class="btn btn-xs btn-accent gap-1 justify-center items-center">
+                    {{ landmark }}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3">
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                      <polyline points="15 3 21 3 21 9" />
+                      <line x1="10" y1="14" x2="21" y2="3" />
+                    </svg>
+                  </a>
+                }
+              </span>
+          </p>
+
+          <div class="card-actions">
+
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <p>No cities found.</p>
+    }
+  </div>
+
+  <div class="divider divider-start my-6">End</div>
+</div>

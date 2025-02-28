@@ -15,6 +15,7 @@ import { DecimalPipe } from '@angular/common';
 export class CitiesComponent implements OnInit {
   allCities = signal<City[]>([]);
   filterText = signal<string>('');
+  loading = signal(true);
 
   filteredCities = computed(() => {
     const filter = this.filterText().toLowerCase();
@@ -32,6 +33,7 @@ export class CitiesComponent implements OnInit {
   ngOnInit(): void {
     this.citiesService.getCities().subscribe((cities) => {
       this.allCities.set(cities);
+      this.loading.set(false);
     });
   }
 

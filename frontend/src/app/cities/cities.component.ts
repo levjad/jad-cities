@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, computed } from '@angular/core';
+import { Component, OnInit, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CitiesService } from './cities.service';
 import { City } from '../../shared/types/cities.interface';
 import { DecimalPipe } from '@angular/common';
@@ -10,6 +10,7 @@ import { DecimalPipe } from '@angular/common';
   imports: [
     DecimalPipe,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CitiesComponent implements OnInit {
   allCities = signal<City[]>([]);

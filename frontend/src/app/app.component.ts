@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, effect } from '@angular/core';
+import { Component, OnInit, signal, effect, ChangeDetectionStrategy } from '@angular/core';
 import { CitiesComponent } from './cities/cities.component';
 
 @Component({
@@ -8,6 +8,7 @@ import { CitiesComponent } from './cities/cities.component';
   imports: [
     CitiesComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
   currentTheme = signal<string>('light'); // Default theme

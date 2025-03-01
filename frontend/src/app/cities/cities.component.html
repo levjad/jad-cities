@@ -31,10 +31,11 @@
     </div>
 
   } @else {
-    <div class="divider divider-start my-6">Results</div>
+    @let cities = filteredCities();
+    <div class="divider divider-start my-6">{{ cities.length }} {{ cities.length === 1 ? 'City' : 'Cities' }}</div>
 
     <div class="grid grid-cols-1 gap-4">
-      @for (city of filteredCities(); track city.name) {
+      @for (city of cities; track city.name) {
         <div class="card bg-base-200">
           <div class="card-body flex flex-col">
             <div class="flex gap-2 items-center">

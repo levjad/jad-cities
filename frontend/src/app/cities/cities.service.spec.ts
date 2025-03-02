@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { CitiesService } from './cities.service';
-import { HttpClient, provideHttpClient } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { City } from '../../shared/types/cities.interface';
 
 describe('CitiesService', () => {
   let service: CitiesService;
   let httpMock: HttpTestingController;
-  let httpClient: HttpClient;
+  let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -15,7 +15,7 @@ describe('CitiesService', () => {
     });
     service = TestBed.inject(CitiesService);
     httpMock = TestBed.inject(HttpTestingController);
-    httpClient = TestBed.inject(HttpClient);
+    httpTestingController = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
@@ -48,5 +48,20 @@ describe('CitiesService', () => {
     const req = httpMock.expectOne('http://localhost:3000/cities');
     expect(req.request.method).toBe('GET');
     req.flush(mockCities);
+  });
+
+  it('should handle errors when retrieving cities', () => {
+    const mockErrorResponse = { status: 404, statusText: 'Not Found' };
+    const mockErrorBody = 'Something bad happened; please try again later.';
+
+    service.getCities().subscribe({
+      next: () => fail('should have failed with the network error'),
+      error: (error) => {
+        expect(error).toEqual(mockErrorBody);
+      },
+    });
+
+    const req = httpTestingController.expectOne(service['apiUrl']);
+    req.flush(mockErrorBody, mockErrorResponse);
   });
 });

@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CitiesController } from './cities.controller';
 import { CitiesService } from './cities.service';
+import { InternalServerErrorException } from '@nestjs/common';
 
 describe('CitiesController', () => {
   let controller: CitiesController;
@@ -41,5 +42,13 @@ describe('CitiesController', () => {
   it('should return cities from the service', () => {
     expect(controller.getCities()).toEqual(mockCities);
     expect(citiesService.getCities).toHaveBeenCalled();
+  });
+
+  it('should throw InternalServerErrorException if service throws error', () => {
+    (citiesService.getCities as jest.Mock).mockImplementation(() => {
+      throw new Error('Retrieving error');
+    });
+
+    expect(() => controller.getCities()).toThrow(InternalServerErrorException);
   });
 });

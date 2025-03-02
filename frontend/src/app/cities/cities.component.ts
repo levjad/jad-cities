@@ -16,6 +16,7 @@ export class CitiesComponent implements OnInit {
   allCities = signal<City[]>([]);
   filterText = signal<string>('');
   loading = signal(true);
+  errorMessage = signal<string | null>(null);
 
   filteredCities = computed(() => {
     const filter = this.filterText().toLowerCase();
@@ -34,6 +35,16 @@ export class CitiesComponent implements OnInit {
     this.citiesService.getCities().subscribe((cities) => {
       this.allCities.set(cities);
       this.loading.set(false);
+    });
+    this.citiesService.getCities().subscribe({
+      next: (cities) => {
+        this.allCities.set(cities);
+        this.loading.set(false);
+      },
+      error: (error) => {
+        this.errorMessage.set(error);
+        this.loading.set(false);
+      },
     });
   }
 

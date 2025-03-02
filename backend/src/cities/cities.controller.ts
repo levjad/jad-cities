@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, InternalServerErrorException } from '@nestjs/common';
 import { CitiesService } from './cities.service';
 
 @Controller('cities')
@@ -7,6 +7,12 @@ export class CitiesController {
 
     @Get()
     getCities(): City[] {
-        return this.citiesService.getCities();
+        try {
+            return this.citiesService.getCities();
+        } catch (error) {
+            console.error('Error retrieving cities:', error);
+            throw new InternalServerErrorException('Failed to retrieve cities. Please try again later.');
+        }
     }
+
 }

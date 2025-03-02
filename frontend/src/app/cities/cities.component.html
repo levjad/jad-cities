@@ -5,7 +5,7 @@
       placeholder="Find cities..."
       class="input w-full bg-base-300"
       (input)="updateFilter($event)"
-      [disabled]="loading()"
+      [disabled]="loading() || errorMessage()"
     />
     <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none">
       <svg
@@ -30,6 +30,12 @@
       <span class="loading loading-dots loading-lg mx-auto"></span>
     </div>
 
+  } @else if (errorMessage()) {
+    <div class="w-full flex justify-center items-center">
+      <span class="text-error">
+        {{ errorMessage() }}
+      </span>
+    </div>
   } @else {
     @let cities = filteredCities();
     <div class="divider divider-start my-6">{{ cities.length }} {{ cities.length === 1 ? 'City' : 'Cities' }}</div>

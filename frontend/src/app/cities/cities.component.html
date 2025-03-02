@@ -29,14 +29,17 @@
     <div class="w-full flex justify-center items-center">
       <span class="loading loading-dots loading-lg mx-auto"></span>
     </div>
+  }
 
-  } @else if (errorMessage()) {
+  @if (errorMessage()) {
     <div class="w-full flex justify-center items-center">
       <span class="text-error">
         {{ errorMessage() }}
       </span>
     </div>
-  } @else {
+  }
+
+  @if(!loading() && !errorMessage()) {
     @let cities = filteredCities();
     <div class="divider divider-start my-6">{{ cities.length }} {{ cities.length === 1 ? 'City' : 'Cities' }}</div>
 

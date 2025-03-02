@@ -32,10 +32,6 @@ export class CitiesComponent implements OnInit {
   constructor(private citiesService: CitiesService) {}
 
   ngOnInit(): void {
-    this.citiesService.getCities().subscribe((cities) => {
-      this.allCities.set(cities);
-      this.loading.set(false);
-    });
     this.citiesService.getCities().subscribe({
       next: (cities) => {
         this.allCities.set(cities);

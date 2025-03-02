@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CitiesComponent } from './cities.component';
 import { CitiesService } from './cities.service';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -84,5 +84,15 @@ describe('CitiesComponent', () => {
       `${landmark}, ${city.name}, ${city.country}`
     )}`;
     expect(component.getGoogleMapsUrl(city, landmark)).toBe(expectedUrl);
+  });
+
+  it('should handle error when loading cities', () => {
+    spyOn(citiesService, 'getCities').and.returnValue(throwError(() => 'Error loading cities'));
+
+    component.ngOnInit();
+    fixture.detectChanges();
+
+    expect(component.errorMessage()).toBe('Error loading cities');
+    expect(component.loading()).toBe(false);
   });
 });

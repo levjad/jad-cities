@@ -41,4 +41,16 @@ describe('AppComponent', () => {
     app.toggleTheme();
     expect(app.currentTheme()).toBe(initialTheme);
   });
+
+  it('should use saved theme', () => {
+    localStorage.clear();
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+
+    app.ngOnInit();
+    fixture.detectChanges();
+
+    const savedTheme = localStorage.getItem('theme') || 'Does not find theme';
+    expect(app.currentTheme()).toBe(savedTheme);
+  });
 });
